@@ -32,7 +32,7 @@ Note: There will be some ethereum references just to explain some things but com
 
 Program - Solana is fast and low cost blockchain, to achieve the speed and low cost solana has slight different programming model. Solana uses Rust programing language to create programs, as you notice we are keep saying solana program instead of solana smart contract from choosing programing language to naming concepts solana is different, in solana world smart contracts are known as Solana Programs.
 
-Account - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in sized. once the account is initialized with the size, you cannot change the size latter
+Account - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in size. once the account is initialized with the size, you cannot change the size latter
 So to store our Blog program we need an account also the account is solana are fixed size and the size of an account is specified before the account creation. so we have to design our application by keeping this is mind.
 
 Rent - on Solana you need to pay rent regularly to store data on blockchain according to the space the data requires,
@@ -40,7 +40,7 @@ the account can be made rent exempt (means you wont have to pay rent) if its bal
 
 ## Application design decision
 
-As we learn we need an account to create our blog dapp that has fixed size, so if wee create a single account with X size and start pushing posts inside that account eventually the account exceeds its size limit and we wont be able to create new posts
+As we learn we need an account to create our blog dapp that has fixed size, so if wee create a single account with X size and start pushing posts inside that account eventually the account exceeds its size limit and we wont be able to create new posts.
 if you know solidity, in solidity we create a dynamic array and push as many items to it as we want. but in solana our accounts will be fixed in sized so we have to find a solution this problem.
 
 **Solution one:** What if we create extremely large size account like in gigabytes? on solana we need to pay rent of account according to its size so if our account grows in size account rent will grow along with it.
@@ -133,7 +133,7 @@ The initialize function has one argument of type context of `Initialize` struct.
 
 Another noticeable thing is `declare_id!`. declare_id! is a macro it defines the program address and used in internal validation, we dont have to think about it too much this will be handle by the Anchor cli.
 
-**Now time start declaring states of our blog app.**
+**Now its time to start declaring states of our blog app.**
 
 ```
 // pseudo code
