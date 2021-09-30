@@ -28,7 +28,7 @@ I will recommend using vscode with rust analyzer extension as it has great suppo
 
 Note: There will be some ethereum references just to explain some things but comprehensive etherium knowledge is not important to understand the tutorial.
 
-## Solana Programming model and Application design decision
+## Solana Programming model
 
 Program - Solana is fast and low cost blockchain, to achieve the speed and low cost solana has slight different programming model. Solana uses Rust programing language to create programs, as you notice we are keep saying solana program instead of solana smart contract from choosing programing language to naming concepts solana is different, in solana world smart contracts are known as Solana Programs.
 
