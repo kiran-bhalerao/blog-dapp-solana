@@ -2,6 +2,10 @@
 
 In this tutorial, we will learn how to create a simple blog post dapp on solana blockchain with anchor framework.
 
+Blog dapp screenshot:
+
+<img src="./final_app.jpeg" alt="Logo" width="800">
+
 ## Requirements
 
 The tools we will use includes:
@@ -15,7 +19,7 @@ I will recommend using vscode with rust analyzer extension as it has great suppo
 
 ## Table of Contents
 
-- Solana Programming modal
+- Solana Programming model
 - Application design decision
 - Setting up Local development
 - Creating blog program
@@ -24,14 +28,14 @@ I will recommend using vscode with rust analyzer extension as it has great suppo
 
 Note: There will be some ethereum references just to explain some things but comprehensive etherium knowledge is not important to understand the tutorial.
 
-## Solana Programming modal and Application design decision
+## Solana Programming model and Application design decision
 
-Programs - Solana is fast and low cost blockchain, to achieve the speed and low cost solana has slight different programming modal. SOlana uses Rust programing language to create programs, as you notice we are keep saying solana program instead of solana smart contract from choosing programing language to naming concepts solana is different, in solana world smart contracts are known as Solana Programs.
+Program - Solana is fast and low cost blockchain, to achieve the speed and low cost solana has slight different programming model. Solana uses Rust programing language to create programs, as you notice we are keep saying solana program instead of solana smart contract from choosing programing language to naming concepts solana is different, in solana world smart contracts are known as Solana Programs.
 
-Accounts - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in sized. once the account is initialized with the size, you cannot change the size latter
+Account - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in sized. once the account is initialized with the size, you cannot change the size latter
 So to store our Blog program we need an account also the account is solana are fixed size and the size of an account is specified before the account creation. so we have to design our application by keeping this is mind.
 
-Rent - on Solana you need to pay rent regularly to store data on blockchain according to the space the sata requires,
+Rent - on Solana you need to pay rent regularly to store data on blockchain according to the space the data requires,
 the account can be made rent exempt (means you wont have to pay rent) if its balance is higher than the some threshold that depends on the space its consuming.
 
 ## Application design decision
@@ -39,7 +43,7 @@ the account can be made rent exempt (means you wont have to pay rent) if its bal
 As we learn we need an account to create our blog dapp that has fixed size, so if wee create a single account with X size and start pushing posts inside that account eventually the account exceeds its size limit and we wont be able to create new posts
 if you know solidity, in solidity we create a dynamic array and push as many items to it as we want. but in solana our accounts will be fixed in sized so we have to find a solution this problem.
 
-**Solution one:** What if we create extremely large size account like in gigabytes? on solana we need to pay rent of ac account according to its size so if our account grows in size account rent will grow along with it.
+**Solution one:** What if we create extremely large size account like in gigabytes? on solana we need to pay rent of account according to its size so if our account grows in size account rent will grow along with it.
 
 **Solution two:** What if we create multiple accounts and connect them somehow? Yes thats the plan, we will create new account for every single post and create chain of posts linked one after another.
 
@@ -99,6 +103,7 @@ The anchor init command creates the following directories:
 - ...
 
 Before writing program code update Anchor.toml
+
 ```
 wallet = "your Keypair Path from output of solana config get"
 ```
@@ -130,7 +135,7 @@ Another noticeable thing is `declare_id!`. declare_id! is a macro it defines the
 **Now time start declaring states of our blog app.**
 
 ```
-// psudo code
+// pseudo code
 
 blog {
  current_post_key    // latest post id so we can traverse back to other posts
@@ -340,6 +345,7 @@ Now lets go little crazy!! CRUD of post!!
 ```
 
 What do you think, why wee need `blog_account` as mut here? Do you remember `current_post_key` field in `BlogState`. Lets look at the function body.
+
 ```
     pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
         let blog_account = &mut ctx.accounts.blog_account;
@@ -372,7 +378,9 @@ pub struct PostEvent {
     pub next_post_id: Option<Pubkey>, // for now ignore this, we will use this when we emit delete event
 }
 ```
+
 Lets emit post create event from post_create function
+
 ```
     pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
         ....
@@ -382,12 +390,13 @@ Lets emit post create event from post_create function
             post_id: post_account.key(),
             next_post_id: None // same as null
         });
-        
+
         Ok(())
     }
 ```
 
 No questions game, straight to the point "Update Post"!
+
 ```
     pub fn update_post(ctx: Context<UpdatePost>, title: String, content: String) -> ProgramResult {
         let post_account = &mut ctx.accounts.post_account;
@@ -403,8 +412,8 @@ No questions game, straight to the point "Update Post"!
 
         Ok(())
     }
-    
-    
+
+
     #[derive(Accounts)]
     pub struct UpdatePost<'info> {
         #[account(
@@ -415,18 +424,20 @@ No questions game, straight to the point "Update Post"!
         pub authority: Signer<'info>,
     }
 ```
+
 Updating post is really simple, take title and content from user and update the `mut post_account`
 
-
 Delete post is little challenging, to store posts we have used LinkedList. if you know LinkedList after delete node from LinkedList we need to link the adjacent node of deleting node. lets understand this through diagram.
-1 -> 2 -> 3
 
-if we want to delete node 2 we have to link 1 -> 3.
+ <img src="./delete_post.png" alt="Logo" width="400" >
+
+if we want to delete post 2 we have to link 1 -> 3.
 
 Lets jump to the code,I know you will understand it easily.
+
 ```
     // Here we need two post account, current_post and next_post account. we get pre_post of current_post from current_post and link it to next_post
-    
+
     pub fn delete_post(ctx: Context<DeletePost>) -> ProgramResult {
         let post_account = &mut ctx.accounts.post_account;
         let next_post_account = &mut ctx.accounts.next_post_account;
@@ -441,7 +452,7 @@ Lets jump to the code,I know you will understand it easily.
 
         Ok(())
     }
-    
+
     #[derive(Accounts)]
     pub struct DeletePost<'info> {
         #[account(
@@ -477,7 +488,7 @@ to handle this case we need to create another function `delete_latest_post`
 
         Ok(())
     }
-    
+
     #[derive(Accounts)]
     pub struct DeleteLatestPost<'info> {
         #[account(
@@ -492,7 +503,6 @@ to handle this case we need to create another function `delete_latest_post`
     }
 ```
 
-
 "holy moly, you made it so far... thats great 😊"
 
 That was last function of our Rust Program.
@@ -501,9 +511,10 @@ Next is Testing program. Dont worry, we'll fast forward the next section.
 
 ## Writing tests for blog program
 
-before we dive into writing test cases, we will create 3 simple reusable utility functions. 
+before we dive into writing test cases, we will create 3 simple reusable utility functions.
 
 **createBlog.js**
+
 ```
     const anchor = require("@project-serum/anchor");
 
@@ -534,7 +545,9 @@ before we dive into writing test cases, we will create 3 simple reusable utility
     };
 
 ```
+
 **createUser.js**
+
 ```
     const anchor = require("@project-serum/anchor");
     const { SystemProgram } = anchor.web3;
@@ -565,6 +578,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 ```
 
 **createPost.js**
+
 ```
     const anchor = require("@project-serum/anchor");
     const { SystemProgram } = anchor.web3;
@@ -595,6 +609,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 ```
 
 Now we are ready to write our first every test case.
+
 ```
 const anchor = require("@project-serum/anchor");
 const assert = require("assert");
@@ -620,17 +635,19 @@ describe("blog tests", () => {
       provider.wallet.publicKey.toString()
     );
   });
-  
+
   // other test cases
  })
 ```
 
 Next, run the test:
+
 ```
 anchor test
 ```
 
 Now we complete remaining tests:
+
 ```
 const anchor = require("@project-serum/anchor");
 const assert = require("assert");
@@ -645,7 +662,7 @@ describe("blog tests", () => {
       program,
       provider
     );
-    
+
     assert.equal(
       blog.currentPostKey.toString(),
       genesisPostAccount.publicKey.toString()
@@ -772,35 +789,43 @@ describe("blog tests", () => {
 ```
 
 Run again:
+
 ```
 anchor test
 ```
 
 ## Deploying to Devnet
+
 Deploying to a live network is straightforward:
 
 1. Set solana config to devnet
+
 ```
 solana config set --url devnet
 ```
 
 2. Open Anchor.toml and Update the cluster to devnet
+
 ```
 cluster = "devnet"
 ```
 
 3. Build program
+
 ```
 anchor build
 ```
 
 4. Deploy program
+
 ```
 anchor deploy
 ```
 
 ## Conclusion
+
 Congratulations on finishing the tutorial! Thank you for taking the time to complete it.
 
 ## References
+
 [https://github.com/kiran-bhalerao/blog-dapp-solana](https://github.com/kiran-bhalerao/blog-dapp-solana)
