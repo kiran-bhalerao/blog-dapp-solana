@@ -52,6 +52,7 @@ Linked 🤔, yeah you guessed it right we will use LinkedList to connect all the
 ## Setting up Local development
 
 before we start with actual development we learn some Solana CLI commands [docs](https://docs.solana.com/cli/conventions):
+
 to see your current solana confguration use:
 
 ```
