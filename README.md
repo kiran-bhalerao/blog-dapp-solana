@@ -178,7 +178,7 @@ we will start with create our very first function `init_blog`
       pub system_program: Program<'info, System>,
   }
 
-  // from psudo blog state
+  // from pseudo blog state
   #[account]
   pub struct BlogState {
       pub current_post_key: Pubkey,
