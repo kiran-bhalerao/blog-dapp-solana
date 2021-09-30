@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "app:start": "cd app && npm run start",
+    "app:build": "cd app && npm run build",
+    "program:build": "anchor build",
+    "program:deploy": "anchor deploy && node copy_idl.js"
+  },
+  "dependencies": {
+    "@project-serum/anchor": "^0.16.1",
+    "@solana/wallet-adapter-base": "^0.6.0",
+    "@solana/wallet-adapter-react": "^0.12.2",
+    "@solana/wallet-adapter-react-ui": "^0.4.2",
+    "@solana/wallet-adapter-wallets": "^0.10.0",
+    "rxjs": "^7.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.0.3"
+  }
+}

@@ -1,0 +1,12 @@
+[programs.localnet]
+blog_sol = "4NozRjJRxdm6z9ERBFjpTmbYLV17Mjc6xjs9kU2aAmRW"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"
+wallet = "/home/kiran/code/sol_wallet/my-keypair-dev-4.json"
+
+[scripts]
+test = "mocha -t 1000000 tests/"

@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*  */
+
+.flex-3 {
+  flex: 3;
+}
+
+.flex-5 {
+  flex: 5;
+}
+
+.background-color {
+  background: linear-gradient(to right, #7a8ff57a, #56d0b5ab);
+  /* background: linear-gradient(to right, #a19afa5c, #ff7f7f40); */
+}
+
+.glass {
+  backdrop-filter: blur(16px) saturate(180%);
+  background-color: rgba(255, 255, 255, 0.75);
+
+  /* background: rgb(255 255 255 / 60%);
+  backdrop-filter: blur(8px); */
+  /* border-radius: 12px;
+  border: 1px solid rgba(209, 213, 219, 0.3); */
+}
+
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.dashboard::-webkit-scrollbar {
+  width: 12px; /* width of the entire scrollbar */
+}
+
+.dashboard::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+.dashboard::-webkit-scrollbar-thumb {
+  border: 5px solid transparent;
+  border-radius: 100px;
+  background-color: #17b688;
+}
+
+.dashboard-main {
+  min-height: calc(100vh - 56px);
+  padding-top: 56px;
+}
+
+.dashboard-aside {
+  position: fixed;
+  min-width: 400px;
+  min-height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 1rem;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+  width: 50%;
+  height: 100%;
+  animation: loading 1s;
+  animation-delay: 6s;
+  transform: translateX(-100%);
+}
+
+@keyframes loading {
+  0% {
+    transform: skewX(-10deg) translateX(-100%);
+  }
+  100% {
+    transform: skewX(-10deg) translateX(200%);
+  }
+}
