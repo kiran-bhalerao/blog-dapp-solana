@@ -2,7 +2,7 @@
 
 In this tutorial, we will learn how to create a simple blog post dapp on solana blockchain with anchor framework.
 
-Blog dapp screenshot:
+Blog dapp:
 
 [Link](https://kiran-bhalerao.github.io/blog-dapp-solana/)
 
