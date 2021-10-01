@@ -4,6 +4,8 @@ In this tutorial, we will learn how to create a simple blog post dapp on solana 
 
 Blog dapp screenshot:
 
+[Link](https://kiran-bhalerao.github.io/blog-dapp-solana/)
+
 <img src="./final_app.jpeg" alt="Logo" width="800">
 
 ## Requirements
