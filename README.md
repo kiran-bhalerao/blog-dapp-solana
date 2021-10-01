@@ -40,7 +40,7 @@ the account can be made rent exempt (means you wont have to pay rent) if its bal
 
 ## Application design decision
 
-As we learn we need an account to create our blog dapp that has fixed size, so if wee create a single account with X size and start pushing posts inside that account eventually the account exceeds its size limit and we wont be able to create new posts.
+As we learn we need an account to create our blog dapp that has fixed size, so if we create a single account with X size and start pushing posts inside that account eventually the account exceeds its size limit and we wont be able to create new posts.
 if you know solidity, in solidity we create a dynamic array and push as many items to it as we want. but in solana our accounts will be fixed in sized so we have to find a solution this problem.
 
 **Solution one:** What if we create extremely large size account like in gigabytes? on solana we need to pay rent of account according to its size so if our account grows in size account rent will grow along with it.
@@ -345,7 +345,7 @@ Now lets go little crazy!! CRUD of post!!
     }
 ```
 
-What do you think, why wee need `blog_account` as mut here? Do you remember `current_post_key` field in `BlogState`. Lets look at the function body.
+What do you think, why we need `blog_account` as mut here? Do you remember `current_post_key` field in `BlogState`. Lets look at the function body.
 
 ```
     pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
