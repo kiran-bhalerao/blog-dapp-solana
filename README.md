@@ -19,12 +19,12 @@ I will recommend using vscode with rust analyzer extension as it has great suppo
 
 ## Table of Contents
 
-- Solana Programming model
-- Application design decision
-- Setting up Local development
-- Creating blog program
-- Writing tests for blog program
-- Deploying to Devnet
+- [Solana Programming model](#solana-programming-model)
+- [Application design decision](#application-design-decision)
+- [Setting up Local development](#setting-up-local-development)
+- [Creating blog program](#creating-blog-program)
+- [Writing tests for blog program](#writing-tests-for-blog-program)
+- [Deploying to Devnet](#deploying-to-devnet)
 
 Note: There will be some ethereum references just to explain some things but comprehensive etherium knowledge is not important to understand the tutorial.
 
