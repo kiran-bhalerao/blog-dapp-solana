@@ -34,8 +34,7 @@ Note: There will be some ethereum references just to explain some things but com
 
 Program - Solana is fast and low cost blockchain, to achieve the speed and low cost solana has slight different programming model. Solana uses Rust programing language to create programs, as you notice we are keep saying solana program instead of solana smart contract from choosing programing language to naming concepts solana is different, in solana world smart contracts are known as Solana Programs.
 
-Account - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in size. once the account is initialized with the size, you cannot change the size latter
-So to store our Blog program we need an account also the account is solana are fixed size and the size of an account is specified before the account creation. so we have to design our application by keeping this is mind.
+Account - Solana program are stateless so if you want to store state you need to use an account for it and the accounts are fixed in size. once the account is initialized with the size, you cannot change the size latter So we have to design our application by keeping this is mind.
 
 Rent - on Solana you need to pay rent regularly to store data on blockchain according to the space the data requires,
 the account can be made rent exempt (means you wont have to pay rent) if its balance is higher than the some threshold that depends on the space its consuming.
