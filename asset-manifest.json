@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/blog-dapp-solana/static/css/main.d06d5f51.chunk.css",
+    "main.js": "/blog-dapp-solana/static/js/main.cb4e4ebc.chunk.js",
+    "main.js.map": "/blog-dapp-solana/static/js/main.cb4e4ebc.chunk.js.map",
+    "runtime-main.js": "/blog-dapp-solana/static/js/runtime-main.5c955279.js",
+    "runtime-main.js.map": "/blog-dapp-solana/static/js/runtime-main.5c955279.js.map",
+    "static/js/2.3ae2eaeb.chunk.js": "/blog-dapp-solana/static/js/2.3ae2eaeb.chunk.js",
+    "static/js/2.3ae2eaeb.chunk.js.map": "/blog-dapp-solana/static/js/2.3ae2eaeb.chunk.js.map",
+    "index.html": "/blog-dapp-solana/index.html",
+    "static/css/main.d06d5f51.chunk.css.map": "/blog-dapp-solana/static/css/main.d06d5f51.chunk.css.map",
+    "static/js/2.3ae2eaeb.chunk.js.LICENSE.txt": "/blog-dapp-solana/static/js/2.3ae2eaeb.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5c955279.js",
+    "static/js/2.3ae2eaeb.chunk.js",
+    "static/css/main.d06d5f51.chunk.css",
+    "static/js/main.cb4e4ebc.chunk.js"
+  ]
+}
