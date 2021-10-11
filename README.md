@@ -110,9 +110,10 @@ Before writing program code update Anchor.toml
 wallet = "your Keypair Path from output of solana config get"
 ```
 
+## Creating blog program
 Now we are ready to start with solana rust program, open up the lib.rs file located inside /program/<blog>/src/ folder.
 
-```
+```rust
 use anchor_lang::prelude::*;
 
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
@@ -136,7 +137,7 @@ Another noticeable thing is `declare_id!`. declare_id! is a macro it defines the
 
 **Now its time to start declaring states of our blog app.**
 
-```
+```rust
 // pseudo code
 
 blog {
@@ -163,7 +164,7 @@ as you have seen the first basic example, we need to create function tha will de
 
 we will start with create our very first function `init_blog`
 
-```
+```rust
  pub fn init_blog(ctx: Context<InitBlog>) -> ProgramResult {
         Ok(())
  }
@@ -206,7 +207,7 @@ in `InitBlog` there are 4 accounts:
 
 with `init_blog` our plan is to initialize the blog account with current_post_key and authority as blog state so lets write code for that,
 
-```
+```rust
   pub fn init_blog(ctx: Context<InitBlog>) -> ProgramResult {
       // get accounts from ctx
       let blog_account = &mut ctx.accounts.blog_account;
@@ -225,7 +226,7 @@ this how easy to create an account which holds some state data with the anchor f
 
 Now we will move to the next function, what we can do next?? user, user signup. Lets define signup function with which user can create his/her profile by providing name and avatar as inputs.
 
-```
+```rust
  pub fn signup_user(ctx: Context<SignupUser>) -> ProgramResult {
     Ok(())
  }
@@ -233,7 +234,7 @@ Now we will move to the next function, what we can do next?? user, user signup. 
 
 Thats the basic skeleton to create new function but here how we get name and avatar from user?? Lets see.
 
-```
+```rust
  pub fn signup_user(ctx: Context<SignupUser>, name: String, avatar: String) -> ProgramResult {
     Ok(())
  }
@@ -241,7 +242,7 @@ Thats the basic skeleton to create new function but here how we get name and ava
 
 we can accept any number of arguments after ctx like here name and avatar as String (Rust is a statically typed Language, we have to define type while defining variables). Next is `SignupUser` ctx type and `UserState` state.
 
-```
+```rust
 #[derive(Accounts)]
 pub struct SignupUser<'info> {
     #[account(init, payer = authority, space = 8 + 40 + 120  + 32)]
@@ -273,7 +274,7 @@ String: String is an array of chars and each char take 4 bytes in rust. (\*\*I d
 
 Moving forward, Let's complete the remaining signup function
 
-```
+```rust
     pub fn signup_user(ctx: Context<SignupUser>, name: String, avatar: String) -> ProgramResult {
         let user_account = &mut ctx.accounts.user_account;
         let authority = &mut ctx.accounts.authority;
@@ -289,7 +290,7 @@ Moving forward, Let's complete the remaining signup function
 Till now we have created 2 function init_blog and signup user with name and avatar. specifically signup takes two arguments, what if user mistakenly sent wrong name and he/she want to update it??
 you guessed it right, we will create next function that allow user to update name and avatar of their account.
 
-```
+```rust
   pub fn update_user(ctx: Context<UpdateUser>, name: String, avatar: String) -> ProgramResult {
       let user_account = &mut ctx.accounts.user_account;
 
@@ -319,7 +320,7 @@ Our blog is initialized user is created now whats remaining?? CRUD of post, in n
 
 Now lets go little crazy!! CRUD of post!!
 
-```
+```rust
    pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
         Ok(())
     }
@@ -348,7 +349,7 @@ Now lets go little crazy!! CRUD of post!!
 
 What do you think, why we need `blog_account` as mut here? Do you remember `current_post_key` field in `BlogState`. Lets look at the function body.
 
-```
+```rust
     pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
         let blog_account = &mut ctx.accounts.blog_account;
         let post_account = &mut ctx.accounts.post_account;
@@ -371,7 +372,7 @@ What do you think, why we need `blog_account` as mut here? Do you remember `curr
 The post is created, Now how we can let the client know that the post is created and the client fetch the post and render it into ui.
 Anchor provides a handy feature of emitting an event, Event?? Yup you heard it right. we can emit an event post created post. Before emitting event we need to define it.
 
-```
+```rust
 
 #[event]
 pub struct PostEvent {
@@ -383,7 +384,7 @@ pub struct PostEvent {
 
 Lets emit post create event from post_create function
 
-```
+```rust
     pub fn create_post(ctx: Context<CreatePost>, title: String, content: String) -> ProgramResult {
         ....
 
@@ -399,7 +400,7 @@ Lets emit post create event from post_create function
 
 No questions game, straight to the point "Update Post"!
 
-```
+```rust
     pub fn update_post(ctx: Context<UpdatePost>, title: String, content: String) -> ProgramResult {
         let post_account = &mut ctx.accounts.post_account;
 
@@ -437,7 +438,7 @@ if we want to delete post 2 we have to link 1 -> 3.
 
 Lets jump to the code,I know you will understand it easily.
 
-```
+```rust
     // Here we need two post account, current_post and next_post account. we get pre_post of current_post from current_post and link it to next_post
 
     pub fn delete_post(ctx: Context<DeletePost>) -> ProgramResult {
@@ -475,7 +476,7 @@ Lets jump to the code,I know you will understand it easily.
 So to delete post use needs to send post_account and next_post_account but what is there is no next_post?? what if user want to delete the latest post that has no next post??
 to handle this case we need to create another function `delete_latest_post`
 
-```
+```rust
     pub fn delete_latest_post(ctx: Context<DeleteLatestPost>) -> ProgramResult {
         let post_account = &mut ctx.accounts.post_account;
         let blog_account = &mut ctx.accounts.blog_account;
@@ -517,7 +518,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 
 **createBlog.js**
 
-```
+```js
     const anchor = require("@project-serum/anchor");
 
     const { SystemProgram } = anchor.web3;
@@ -550,7 +551,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 
 **createUser.js**
 
-```
+```js
     const anchor = require("@project-serum/anchor");
     const { SystemProgram } = anchor.web3;
 
@@ -581,7 +582,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 
 **createPost.js**
 
-```
+```js
     const anchor = require("@project-serum/anchor");
     const { SystemProgram } = anchor.web3;
 
@@ -612,7 +613,7 @@ before we dive into writing test cases, we will create 3 simple reusable utility
 
 Now we are ready to write our first every test case.
 
-```
+```js
 const anchor = require("@project-serum/anchor");
 const assert = require("assert");
 
@@ -650,7 +651,7 @@ anchor test
 
 Now we complete remaining tests:
 
-```
+```js
 const anchor = require("@project-serum/anchor");
 const assert = require("assert");
 
