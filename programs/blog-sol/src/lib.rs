@@ -1,4 +1,13 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::entrypoint::ProgramResult;
+use solana_security_txt::security_txt;
+
+security_txt! {
+    name: "Blog Sol",
+    project_url: "https://kiran-bhalerao.github.io/blog-dapp-solana/",
+    contacts: "link:https://github.com/kiran-bhalerao/blog-dapp-solana",
+    policy: "https://github.com/kiran-bhalerao/blog-dapp-solana"
+}
 
 declare_id!("4NozRjJRxdm6z9ERBFjpTmbYLV17Mjc6xjs9kU2aAmRW");
 
@@ -113,6 +122,7 @@ pub struct InitBlog<'info> {
     pub blog_account: Account<'info, BlogState>,
     #[account(init, payer = authority, space = 8 + 32 + 32 + 32 + 32 + 8)]
     pub genesis_post_account: Account<'info, PostState>,
+    #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
@@ -125,6 +135,7 @@ pub struct CreatePost<'info> {
     pub user_account: Account<'info, UserState>,
     #[account(mut)]
     pub blog_account: Account<'info, BlogState>,
+    #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
@@ -170,6 +181,7 @@ pub struct DeleteLatestPost<'info> {
 pub struct SignupUser<'info> {
     #[account(init, payer = authority, space = 8 + 40 + 120  + 32)]
     pub user_account: Account<'info, UserState>,
+    #[account(mut)]
     pub authority: Signer<'info>,
     pub system_program: Program<'info, System>,
 }
